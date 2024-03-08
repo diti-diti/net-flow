@@ -1,0 +1,26 @@
+name: Docker Security Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  security_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker-compose build
+
+      - name: Run Docker Scout
+        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/codeship/src codeship/dockerscout /codeship/src
+
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Run Checkov
+        run: checkov --dockerfile telegraf/Dockerfile
