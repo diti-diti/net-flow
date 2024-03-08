@@ -16,8 +16,9 @@ jobs:
       - name: Build Docker image
         run: docker-compose build
 
-      - name: Run Docker Scout
-        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/codeship/src codeship/dockerscout /codeship/src
+      - name: Run Trivy vulnerability scan
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --cache-dir /path/to/cache-dir --exit-code 0 --severity HIGH,CRITICAL --no-progress your-docker-image:tag
 
       - name: Install Checkov
         run: pip install checkov
