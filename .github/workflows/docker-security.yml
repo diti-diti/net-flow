@@ -15,11 +15,15 @@ jobs:
 
       - name: Build Docker image
         run: docker-compose build
-- name: Run Trivy vulnerability scan for InfluxDB
-  run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --cache-dir /root/.cache/trivy --no-progress influxdb:2.0.10
+
+      - name: Run Trivy vulnerability scan for InfluxDB
+        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --cache-dir /root/.cache/trivy --no-progress influxdb:latest
+
       - name: Run Trivy vulnerability scan for Grafana
-        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --cache-dir /root/.cache/trivy  --no-progress grafana/grafana-oss:8.0.6
+        run: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --cache-dir /root/.cache/trivy --no-progress grafana/grafana-oss:latest
+
       - name: Install Checkov
         run: pip install checkov
+
       - name: Run Checkov
         run: checkov --dockerfile telegraf/Dockerfile
