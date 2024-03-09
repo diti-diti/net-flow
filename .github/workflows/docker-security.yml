@@ -3,7 +3,7 @@ name: Docker Security Tests
 on:
   push:
     branches:
-      - main
+      - github-actions
 
 jobs:
   security_scan:
